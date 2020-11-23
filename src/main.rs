@@ -1,17 +1,17 @@
 #[macro_use]
 extern crate log;
+extern crate serde;
+extern crate serde_json;
+extern crate chrono;
 
 mod handlers;
+mod types;
 
 use actix_web::{
     web, 
     App, 
     HttpServer,
-    http::StatusCode,
     middleware::Logger,
-    middleware::errhandlers::{
-        ErrorHandlers,
-    }
 };
 
 
@@ -25,15 +25,19 @@ async fn main() -> std::io::Result<()> {
         debug!("Initializing Http Server");
         App::new()
             .wrap(Logger::default()) // Enable logging
-            .wrap(ErrorHandlers::new()
-                .handler(StatusCode::NOT_FOUND, handlers::geoloc::return_not_found))
             .service(
                 web::resource("/geoloc/publishLocation")
-                .route(web::put().to(handlers::geoloc::add_location))
+                .route(web::post().to(handlers::geoloc::add_location))
             )
             .service(
                 web::resource("/geoloc/locations")
                 .route(web::get().to(handlers::geoloc::get_locations))
+            ).service(
+                web::resource("/geoloc")
+                .route(web::get().to(handlers::geoloc::get_locations))
+                .route(web::post().to(handlers::geoloc::add_location))
+            ).default_service(
+                web::route().to(handlers::geoloc::render_404)
             )
     })
     .bind("0.0.0.0:8080")?
