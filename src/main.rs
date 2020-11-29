@@ -4,8 +4,11 @@ extern crate serde;
 extern crate serde_json;
 extern crate chrono;
 
+extern crate rusqlite;
+
 mod handlers;
 mod types;
+mod sqlite_adapter;
 
 use actix_web::{
     web, 
