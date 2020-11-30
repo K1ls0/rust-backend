@@ -26,16 +26,40 @@ impl BareStatus {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GeoLocation {
-        lat: f64,
-        long: f64,
+        pub lat: f64,
+        pub long: f64,
+}
+
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct AnonymousGeoData  {
+    pub status: Status,
+    pub loc: GeoLocation,
+    pub refresh_time: NaiveDateTime
+}
+
+impl AnonymousGeoData {
+    pub fn new(
+        loc: GeoLocation,
+        refresh_time: NaiveDateTime
+    ) -> AnonymousGeoData {
+        AnonymousGeoData {
+            status: Status {
+                title: String::from("Ok"),
+                code: 200
+            },
+            loc,
+            refresh_time
+        }
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GeoData {
-    status: Status,
-    uuid: Uuid,
-    loc: GeoLocation,
-    refresh_time: NaiveDateTime,
+    pub status: Status,
+    pub uuid: Uuid,
+    pub loc: GeoLocation,
+    pub refresh_time: NaiveDateTime,
 }
 
 impl GeoData {
@@ -54,6 +78,10 @@ impl GeoData {
             refresh_time
         }
     }
-
 }
 
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GeoDataCollection {
+    pub items: std::collections::LinkedList<GeoData>
+}

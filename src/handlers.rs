@@ -1,5 +1,8 @@
 pub mod geoloc {
+    use std::sync::Mutex;
+
     use actix_web::{
+        web,
         HttpRequest,
         HttpResponse,
         Responder,
@@ -7,18 +10,23 @@ pub mod geoloc {
     };
 
     use crate::types;
+    use crate::sqlite_adapter::SQLDataBase;
 
-    pub async fn add_location(_req: HttpRequest) -> Result<impl Responder, Error> {
-        println!("addLocation called!");
+    pub async fn add_location(db: web::Data<Mutex<SQLDataBase>>, payload: web::Json<types::GeoData>) -> Result<impl Responder, Error> {
+        debug!("Adding location");
+        let db = db.lock().unwrap();
+
         Ok(HttpResponse::Ok().json(types::BareStatus::new(String::from("Added location successfully"), 200)))
     }
 
-    pub async fn get_locations(_req: HttpRequest) -> Result<impl Responder, Error> {
-        println!("getLocations called!");
+    pub async fn get_locations(db: web::Data<Mutex<SQLDataBase>>) -> Result<impl Responder, Error> {
+        debug!("updating location");
+        let db = db.lock().unwrap();
         Ok(HttpResponse::Ok().json(types::BareStatus::new(String::from("Getting locations"), 200)))
     }
     
-    pub async fn render_404(_req: HttpRequest) -> Result<impl Responder, Error> {
+    pub async fn render_404(req: HttpRequest) -> Result<impl Responder, Error> {
+        debug!("Invalid request made (to '{}')", req.uri());
 
         Ok(HttpResponse::Ok().json(types::BareStatus::new(String::from("404 Not found"), 404)))
     }

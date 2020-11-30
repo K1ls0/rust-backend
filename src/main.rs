@@ -10,6 +10,8 @@ mod handlers;
 mod types;
 mod sqlite_adapter;
 
+use std::sync::Mutex;
+
 use actix_web::{
     web, 
     App, 
@@ -26,7 +28,13 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         debug!("Initializing Http Server");
+        // let data = sqlite_adapter::SQLDataBase::new(String::from("./db/geoloc-data.db"), String::from("geoloc_storage"));
+        let data = web::Data::new(Mutex::new(
+                sqlite_adapter::SQLDataBase::new(&String::from("./db/geoloc-data.db"), &String::from("geoloc_storage"))
+        ));
+
         App::new()
+            .app_data(data)
             .wrap(Logger::default()) // Enable logging
             .service(
                 web::resource("/geoloc/publishLocation")
@@ -35,7 +43,8 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::resource("/geoloc/locations")
                 .route(web::get().to(handlers::geoloc::get_locations))
-            ).service(
+            )
+            .service(
                 web::resource("/geoloc")
                 .route(web::get().to(handlers::geoloc::get_locations))
                 .route(web::post().to(handlers::geoloc::add_location))

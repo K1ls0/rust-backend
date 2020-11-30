@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for cD in */; do
+    echo ----------------------$cD----------------------
+    cd $cD
+
+    git fetch; git status
+    if [ $1="update" ]; then
+        git pull
+    fi
+
+    cd ..
+done
