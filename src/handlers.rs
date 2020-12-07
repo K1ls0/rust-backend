@@ -12,16 +12,15 @@ pub mod geoloc {
     use crate::types;
     use crate::sqlite_adapter::SQLDataBase;
 
-    pub async fn add_location(db: web::Data<Mutex<SQLDataBase>>, payload: web::Json<types::GeoData>) -> Result<impl Responder, Error> {
+    pub async fn add_location(db: web::Data<SQLDataBase>, payload: web::Json<types::GeoData>) -> Result<impl Responder, Error> {
+        let geodat = types::GeoData::from(payload);
         debug!("Adding location");
-        let db = db.lock().unwrap();
 
         Ok(HttpResponse::Ok().json(types::BareStatus::new(String::from("Added location successfully"), 200)))
     }
 
-    pub async fn get_locations(db: web::Data<Mutex<SQLDataBase>>) -> Result<impl Responder, Error> {
+    pub async fn get_locations(db: web::Data<SQLDataBase>) -> Result<impl Responder, Error> {
         debug!("updating location");
-        let db = db.lock().unwrap();
         Ok(HttpResponse::Ok().json(types::BareStatus::new(String::from("Getting locations"), 200)))
     }
     

@@ -25,17 +25,14 @@ async fn main() -> std::io::Result<()> {
     env_logger::init();
     //let cfg_file = File::open("./service_config.yml")?;
 
-
     HttpServer::new(move || {
         debug!("Initializing Http Server");
         // let data = sqlite_adapter::SQLDataBase::new(String::from("./db/geoloc-data.db"), String::from("geoloc_storage"));
-        let data = web::Data::new(Mutex::new(
-                sqlite_adapter::SQLDataBase::new(&String::from("./db/geoloc-data.db"), &String::from("geoloc_storage"))
-        ));
+        let data = sqlite_adapter::SQLDataBase::new(&String::from("./db/geoloc-data.db"), &String::from("geoloc_storage"));
 
         App::new()
-            .app_data(data)
             .wrap(Logger::default()) // Enable logging
+            .data(data)
             .service(
                 web::resource("/geoloc/publishLocation")
                 .route(web::post().to(handlers::geoloc::add_location))

@@ -6,4 +6,6 @@ services:
       - MODE="RUN"
     volumes:
       - ./src:/geoloc/src
+    ports:
+      - 8080:8080
 

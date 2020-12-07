@@ -16,6 +16,9 @@ COPY Cargo.toml .
 COPY ./entrypoint.sh .
 COPY ./watch-filesystem .
 
+EXPOSE 8080
+EXPOSE 80
+
 # COPY ./src ./src
 
 # RUN cargo build

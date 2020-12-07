@@ -107,7 +107,7 @@ impl SQLDataBase {
     }
 
     pub fn get_client(&self, uuid: Uuid) -> Result<GeoDataCollection, Error> {
-        let mut data = self.conn.execute("
+        let data = self.conn.execute("
             SELECT * FROM ?1
             WHERE client_uuid=\"?2\"
         ", params![
