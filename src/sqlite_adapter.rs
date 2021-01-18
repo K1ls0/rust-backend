@@ -2,7 +2,7 @@ use rusqlite::{ Connection, Result, params, Error };
 
 use uuid::Uuid;
 
-use crate::types::{ GeoLocation, AnonymousGeoData, GeoDataCollection };
+use crate::types::{ GeoLocation, RXGeoData, TXGeoData };
 use chrono::NaiveDateTime;
 
 #[derive(Debug)]
@@ -14,7 +14,7 @@ pub struct SQLDataBase {
 
 impl Clone for SQLDataBase {
     fn clone(&self) -> SQLDataBase {
-         SQLDataBase::new(&self.filepath, &self.table_name).expect("Error while Cloning the SQL Data base")
+         SQLDataBase::new(&self.filepath, &self.table_name).expect("Error while Cloning the SQL Data base adapter.")
     }
 }
 
@@ -106,7 +106,7 @@ impl SQLDataBase {
         Ok(())
     }
 
-    pub fn get_client(&self, uuid: Uuid) -> Result<GeoDataCollection, Error> {
+    pub fn get_client(&self, uuid: Uuid) -> Result<std::collections::LinkedList<GeoLocation>, Error> {
         let data = self.conn.execute("
             SELECT * FROM ?1
             WHERE client_uuid=\"?2\"
@@ -114,9 +114,7 @@ impl SQLDataBase {
             self.table_name,
             uuid.to_string()
         ])?;
-        println!("Got Data: {}", data);
-        Ok(GeoDataCollection {
-            items: std::collections::LinkedList::new()
-        })
+        println!("Got Data: {:?}", data);
+        Ok(std::collections::LinkedList::new())
     }
 }

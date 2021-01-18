@@ -25,54 +25,33 @@ impl BareStatus {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct AnonymGeoLocation {
+        pub lat: f64,
+        pub long: f64,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct GeoLocation {
+        pub id: u32,
         pub lat: f64,
         pub long: f64,
 }
 
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct AnonymousGeoData  {
-    pub status: Status,
-    pub loc: GeoLocation,
-    pub refresh_time: NaiveDateTime
-}
-
-impl AnonymousGeoData {
-    pub fn new(
-        loc: GeoLocation,
-        refresh_time: NaiveDateTime
-    ) -> AnonymousGeoData {
-        AnonymousGeoData {
-            status: Status {
-                title: String::from("Ok"),
-                code: 200
-            },
-            loc,
-            refresh_time
-        }
-    }
-}
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct GeoData {
-    pub status: Status,
+pub struct RXGeoData {
     pub uuid: Uuid,
-    pub loc: GeoLocation,
+    pub loc: AnonymGeoLocation,
     pub refresh_time: NaiveDateTime,
 }
-
-impl GeoData {
+impl RXGeoData {
     pub fn new(
         uuid: Uuid,
-        loc: GeoLocation,
+        loc: AnonymGeoLocation,
         refresh_time: NaiveDateTime
-    ) -> GeoData {
-        GeoData {
-            status: Status {
-                title: String::from("Ok"),
-                code: 200
-            },
+    ) -> RXGeoData {
+        RXGeoData {
             uuid,
             loc,
             refresh_time
@@ -82,6 +61,24 @@ impl GeoData {
 
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct GeoDataCollection {
-    pub items: std::collections::LinkedList<GeoData>
+pub struct TXGeoData {
+    pub status: Status,
+    pub refresh_time: NaiveDateTime,
+    pub items: std::collections::LinkedList<GeoLocation>,
+}
+
+impl TXGeoData {
+    pub fn new(
+        refresh_time: NaiveDateTime,
+        items: std::collections::LinkedList<GeoLocation>,
+    ) -> TXGeoData {
+        TXGeoData {
+            status: Status {
+                title: String::from("Ok"),
+                code: 200
+            },
+            refresh_time,
+            items,
+        }
+    }
 }

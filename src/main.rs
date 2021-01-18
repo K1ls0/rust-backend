@@ -19,6 +19,8 @@ use actix_web::{
     middleware::Logger,
 };
 
+use types::AnonymGeoLocation;
+
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -32,7 +34,7 @@ async fn main() -> std::io::Result<()> {
 
         App::new()
             .wrap(Logger::default()) // Enable logging
-            .data(data)
+            .data(AnonymGeoLocation {lat: 0.4, long: 1.3})
             .service(
                 web::resource("/geoloc/publishLocation")
                 .route(web::post().to(handlers::geoloc::add_location))

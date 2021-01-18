@@ -3,7 +3,7 @@ services:
   geoloc:
     build: .
     environment:
-      - MODE="RUN"
+      - MODE=RUN
     volumes:
       - ./src:/geoloc/src
     ports:

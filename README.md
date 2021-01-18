@@ -28,3 +28,13 @@
 - Connection pools (don't close connections if next update is closer than a specific threshhold for better performance (client-wise))
     - See Rust r2d2
     - diesel for sql/sqlite OR sqlite crate rust
+
+## Geolocation access via curl
+### Post to publishLocation
+```bash
+curl -XPOST -H "Content-type: application/json" -d '{"status": {"title": "ok", "code": 200}, "loc": {"lat": 52.3918800, "long": 13.2216100}, "uuid": "043457d3-6e20-4c01-988e-e9619b8fdef6", "refresh_time": "1606145980"}' 'http://localhost:8080/geoloc/publishLocation'
+```
+
+### Get locations
+
+
