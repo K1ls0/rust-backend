@@ -77,4 +77,3 @@ pub mod rest {
         pub uuid: uuid::Uuid,
     }
 }
-

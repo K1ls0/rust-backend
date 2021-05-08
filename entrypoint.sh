@@ -1,10 +1,10 @@
 #!/bin/sh
 
 echo MODE: $MODE
-if [  "$MODE"="RUN" ]; then
+if [  "$MODE" == "RUN" ]; then
     echo "Running webserver"
-    cargo run
-elif [ "$MODE"="DEBUG" ]; then
+    RUST_LOG=DEBUG cargo run
+elif [ "$MODE" == "DEBUG" ]; then
     echo "Running compilation debugging"
     cd src && watchmedo shell-command --patterns="*.rs" --recursive --command="cargo build"
 else
