@@ -4,13 +4,13 @@
 
 ```sql
 CREATE TABLE geoloc_storage(
-    client_uuid VARCHAR(36) NOT NULL, 
-    lattitude REAL, 
-    longitude REAL, 
-    utc_refresh_timestamp INTEGER, 
-    notes TEXT, 
-    PRIMARY KEY(client_uuid));
-ALTER TABLE geoloc_storage ADD PRIMARY KEY (client_uuid);```
+    client_uuid VARCHAR(36) NOT NULL PRIMARY KEY, 
+    lattitude REAL NOT NULL,
+    longitude REAL NOT NULL, 
+    refresh TIMESTAMP NOT NULL, 
+    notes TEXT
+    );
+``````
 
 ### insert new client into table
 
@@ -23,7 +23,7 @@ VALUES("{UUID}", {LATT}, {LONG}, {TIME_UTC}, "{NOTES}");
 
 ```sql
 UPDATE geoloc_storage 
-SET lattitude={LATT}, longitude={LONG}, utc_refresh_timestamp={TIME_UTC}
+SET lattitude={LATT}, longitude={LONG}, refresh={TIME_UTC}
 WHERE client_uuid="{UUID}"
 ```
 
@@ -41,4 +41,6 @@ WHERE client_uuid="{UUID}"
 DELETE FROM geoloc_storage
 WHERE client_uuid="{UUID}"
 ```
+# Postgres
+username+pw
 

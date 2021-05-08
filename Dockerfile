@@ -19,7 +19,7 @@ COPY ./watch-filesystem .
 EXPOSE 8080
 EXPOSE 80
 
-# COPY ./src ./src
+# COPY ./src ./src TODO
 
 # RUN cargo build
 

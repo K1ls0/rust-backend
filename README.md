@@ -26,5 +26,3 @@
 - https (ssl certificate for the api server)
     - OAuth (basic oauth authorization, also for accessing the data)
 - Connection pools (don't close connections if next update is closer than a specific threshhold for better performance (client-wise))
-    - See Rust r2d2
-    - diesel for sql/sqlite OR sqlite crate rust
